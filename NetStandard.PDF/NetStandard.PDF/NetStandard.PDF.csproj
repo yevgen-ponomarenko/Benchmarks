@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.10.11" />
+    <PackageReference Include="Syncfusion.Pdf.NETStandard20" Version="15.4200.0.17" />
+  </ItemGroup>
+
+</Project>
