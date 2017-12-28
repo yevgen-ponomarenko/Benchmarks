@@ -1,3 +1,4 @@
 **/obj/
 **/bin/
 **/.vs
+/NetStandard.PDF/NetStandard.PDF/BenchmarkDotNet.Artifacts

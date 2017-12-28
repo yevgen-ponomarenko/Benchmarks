@@ -6,7 +6,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="k1_1000pages_1mb.pdf" />
+    <None Remove="k1_1000pages_24mb.pdf" />
+    <None Remove="sample_125Mb_gt_7500pages.pdf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="k1_1000pages_1mb.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="k1_1000pages_24mb.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sample_125Mb_gt_7500pages.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.10.11" />
+    <PackageReference Include="iTextSharp" Version="5.5.12" />
     <PackageReference Include="Syncfusion.Pdf.NETStandard20" Version="15.4200.0.17" />
   </ItemGroup>
 
