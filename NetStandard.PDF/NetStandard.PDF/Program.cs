@@ -43,29 +43,29 @@ namespace NetStandard.PDF
                 }
             }
 
-            //[Benchmark]
-            //public void Syncfusion_Split_24Mb_1000pages_by_2_pages()
-            //{
-            //    RunSynfusionBenchmark("k1_1000pages_24mb.pdf", 2);
-            //}
-            
-            //[Benchmark]
-            //public void Syncfusion_Split_1Mb_1000pages_by_2_pages()
-            //{
-            //    RunSynfusionBenchmark("k1_1000pages_1mb.pdf", 2);
-            //}
+            [Benchmark]
+            public void Syncfusion_Split_24Mb_1000pages_by_2_pages()
+            {
+                RunSynfusionBenchmark("k1_1000pages_24mb.pdf", 2);
+            }
 
-            //[Benchmark]
-            //public void iText_Split_24Mb_1000pages_by_2_pages()
-            //{
-            //    RuniTextBenchmark("k1_1000pages_24mb.pdf", 2);
-            //}
+            [Benchmark]
+            public void Syncfusion_Split_1Mb_1000pages_by_2_pages()
+            {
+                RunSynfusionBenchmark("k1_1000pages_1mb.pdf", 2);
+            }
 
-            //[Benchmark]
-            //public void iText_Split_1Mb_1000pages_by_2_pages()
-            //{
-            //    RuniTextBenchmark("k1_1000pages_1mb.pdf", 2);
-            //}
+            [Benchmark]
+            public void iText_Split_24Mb_1000pages_by_2_pages()
+            {
+                RuniTextBenchmark("k1_1000pages_24mb.pdf", 2);
+            }
+
+            [Benchmark]
+            public void iText_Split_1Mb_1000pages_by_2_pages()
+            {
+                RuniTextBenchmark("k1_1000pages_1mb.pdf", 2);
+            }
 
             [Benchmark]
             public void Syncfusion_Split_125Mb_gt_7500pages_by_10_pages()
