@@ -5,10 +5,8 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Attributes.Jobs;
 using BenchmarkDotNet.Engines;
 using BenchmarkDotNet.Running;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
+using iText.Kernel.Utils;
 using Syncfusion.Pdf.Parsing;
-using PdfDocument = Syncfusion.Pdf.PdfDocument;
 
 namespace NetStandard.PDF
 {
@@ -44,27 +42,28 @@ namespace NetStandard.PDF
             }
 
             [Benchmark]
-            public void Syncfusion_Split_24Mb_1000pages_by_2_pages()
-            {
-                RunSynfusionBenchmark("k1_1000pages_24mb.pdf", 2);
-            }
-
-            [Benchmark]
             public void Syncfusion_Split_1Mb_1000pages_by_2_pages()
             {
                 RunSynfusionBenchmark("k1_1000pages_1mb.pdf", 2);
             }
 
             [Benchmark]
-            public void iText_Split_24Mb_1000pages_by_2_pages()
-            {
-                RuniTextBenchmark("k1_1000pages_24mb.pdf", 2);
-            }
-
-            [Benchmark]
             public void iText_Split_1Mb_1000pages_by_2_pages()
             {
                 RuniTextBenchmark("k1_1000pages_1mb.pdf", 2);
+            }
+
+            [Benchmark]
+            public void Syncfusion_Split_24Mb_1000pages_by_2_pages()
+            {
+                RunSynfusionBenchmark("k1_1000pages_24mb.pdf", 2);
+            }
+
+
+            [Benchmark]
+            public void iText_Split_24Mb_1000pages_by_2_pages()
+            {
+                RuniTextBenchmark("k1_1000pages_24mb.pdf", 2);
             }
 
             [Benchmark]
@@ -79,41 +78,25 @@ namespace NetStandard.PDF
                 RuniTextBenchmark("sample_125Mb_gt_7500pages.pdf", 10);
             }
 
-
-
             public void RuniTextBenchmark(string fileToSplit, int splitByPagesNumber, int? pagesCountToProcess = null)
             {
                 var srcFile = Path.Combine(_rootFolder, fileToSplit);
                 var file = new FileInfo(srcFile);
                 var name = file.Name.Substring(0, file.Name.LastIndexOf(".", StringComparison.Ordinal));
-
-                using (var reader = new PdfReader(srcFile))
+                
+                using (var reader = new iText.Kernel.Pdf.PdfReader(srcFile))
                 {
 
-                    var pagesCount = pagesCountToProcess ?? reader.NumberOfPages;
-                    var iteration = 1;
-                    var currentPageIndex = 0;
+                    var doc = new iText.Kernel.Pdf.PdfDocument(reader);
 
-                    //Split the pages into separate documents.
-                    while (currentPageIndex < pagesCount)
+                    var splitter = new CustomFileSplitter(doc, _resultsiTextFolder, name);
+                    var splittedDocuments = splitter.SplitByPageCount(splitByPagesNumber);
+
+                    foreach (var sd in splittedDocuments)
                     {
-                        var endPage = currentPageIndex + splitByPagesNumber < pagesCount
-                            ? currentPageIndex + splitByPagesNumber
-                            : pagesCount;
-
-                        var document = new Document();
-                        var copy = new PdfCopy(document, File.Create(Path.Combine(_resultsiTextFolder, $"splitted_{name}_{iteration}.pdf")));
-
-                        document.Open();
-
-                        while (currentPageIndex++ < endPage)
-                        {
-                            copy.AddPage(copy.GetImportedPage(reader, currentPageIndex));
-                        }
-
-                        document.Close();
-                        iteration++;
+                        sd.Close();
                     }
+                    doc.Close();
                 }
             }
 
@@ -137,7 +120,7 @@ namespace NetStandard.PDF
                 //Split the pages into separate documents.
                 while (currentPageIndex < pagesCount)
                 {
-                    var newDocument = new PdfDocument { EnableMemoryOptimization = true };
+                    var newDocument = new Syncfusion.Pdf.PdfDocument { EnableMemoryOptimization = true };
 
                     int endPage = currentPageIndex + splitByPagesNumber < pagesCount
                         ? currentPageIndex + splitByPagesNumber - 1
@@ -158,6 +141,26 @@ namespace NetStandard.PDF
                 srcStream.Dispose();
                 docToSplit.Close();
             }
+        }
+    }
+
+    public class CustomFileSplitter : PdfSplitter
+    {
+        private int _partNumber;
+        private readonly string _resultsiTextFolder;
+        private readonly string _originalFileName;
+
+        public CustomFileSplitter(iText.Kernel.Pdf.PdfDocument pdfDocument, string resultsiTextFolder, string originalFileName) : base(pdfDocument)
+        {
+            _partNumber = 1;
+            _resultsiTextFolder = resultsiTextFolder;
+            _originalFileName = originalFileName;
+        }
+
+        protected override iText.Kernel.Pdf.PdfWriter GetNextPdfWriter(PageRange documentPageRange)
+        {
+            return new iText.Kernel.Pdf.PdfWriter(File.Create(Path.Combine(_resultsiTextFolder,
+                $"splitted_{_originalFileName}_{_partNumber++}.pdf")));
         }
     }
 }
