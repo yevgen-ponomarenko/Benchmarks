@@ -26,7 +26,7 @@
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.10.11" />
     <PackageReference Include="itext7" Version="7.1.0" />
-    <PackageReference Include="Syncfusion.Pdf.NETStandard20" Version="15.4200.0.17" />
+    <PackageReference Include="Syncfusion.Pdf.NETStandard20" Version="15.4200.0.20" />
   </ItemGroup>
 
 </Project>
