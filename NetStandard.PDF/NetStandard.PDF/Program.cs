@@ -47,11 +47,11 @@ namespace NetStandard.PDF
                 RunSynfusionBenchmark("k1_1000pages_1mb.pdf", 2);
             }
 
-            [Benchmark]
-            public void iText_Split_1Mb_1000pages_by_2_pages()
-            {
-                RuniTextBenchmark("k1_1000pages_1mb.pdf", 2);
-            }
+            //[Benchmark]
+            //public void iText_Split_1Mb_1000pages_by_2_pages()
+            //{
+            //    RuniTextBenchmark("k1_1000pages_1mb.pdf", 2);
+            //}
 
             [Benchmark]
             public void Syncfusion_Split_24Mb_1000pages_by_2_pages()
@@ -60,11 +60,11 @@ namespace NetStandard.PDF
             }
 
 
-            [Benchmark]
-            public void iText_Split_24Mb_1000pages_by_2_pages()
-            {
-                RuniTextBenchmark("k1_1000pages_24mb.pdf", 2);
-            }
+            //[Benchmark]
+            //public void iText_Split_24Mb_1000pages_by_2_pages()
+            //{
+            //    RuniTextBenchmark("k1_1000pages_24mb.pdf", 2);
+            //}
 
             [Benchmark]
             public void Syncfusion_Split_125Mb_gt_7500pages_by_10_pages()
@@ -72,11 +72,11 @@ namespace NetStandard.PDF
                 RunSynfusionBenchmark("sample_125Mb_gt_7500pages.pdf", 10);
             }
 
-            [Benchmark]
-            public void iText_Split_125Mb_gt_7500pages_10_pages()
-            {
-                RuniTextBenchmark("sample_125Mb_gt_7500pages.pdf", 10);
-            }
+            //[Benchmark]
+            //public void iText_Split_125Mb_gt_7500pages_10_pages()
+            //{
+            //    RuniTextBenchmark("sample_125Mb_gt_7500pages.pdf", 10);
+            //}
 
             public void RuniTextBenchmark(string fileToSplit, int splitByPagesNumber, int? pagesCountToProcess = null)
             {
@@ -126,7 +126,7 @@ namespace NetStandard.PDF
                         ? currentPageIndex + splitByPagesNumber - 1
                         : pagesCount - 1;
 
-                    newDocument.ImportPageRange(docToSplit, currentPageIndex, endPage);
+                    newDocument.ImportPageRange(docToSplit, currentPageIndex, endPage, false);
 
                     using (var fileStream = File.Create(Path.Combine(_resultsSyncfusionFolder, $"splitted_{name}_{iteration}.pdf")))
                     {
